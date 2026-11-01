@@ -49,6 +49,8 @@ Trong SSMS: **File > Open > File...** rồi bấm **Execute (F5)** lần lượt
 | 1 | `database/schema.sql` | Tạo database `DNSE` và các bảng |
 | 2 | `database/seed.sql` | Nạp dữ liệu ban đầu (trường, ngành, lịch, địa điểm, bài viết mẫu...) |
 | 3 | `database/upgrade_v2.sql` | Thêm cột/bảng cho lịch cá nhân, địa điểm do sinh viên thêm, bổ sung dữ liệu |
+| 4 | `database/full.sql` | File Full Toàn Bộ Trong SQL SERVER Database Trên Máy Của Nhật Dương |
+
 
 > **Bắt buộc chạy cả file số 3.** Thiếu file này server sẽ báo lỗi cột `DayOfWeek`, `UserId`...
 > Cả 3 file đều chạy lại được nhiều lần, không bị trùng dữ liệu.
