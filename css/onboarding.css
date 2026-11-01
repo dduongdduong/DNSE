@@ -1,0 +1,215 @@
+.onboarding-wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--bg-main);
+    overflow: hidden;
+}
+
+.onboarding-branding {
+    flex: 4;
+    background: linear-gradient(135deg, var(--primary-blue), #133924);
+    color: var(--text-light);
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.branding-content {
+    position: relative;
+    z-index: 10;
+    max-width: 480px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 60px;
+}
+
+.mock-logo {
+    width: 48px;
+    height: 48px;
+    background-color: var(--text-light);
+    color: var(--primary-blue);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-name {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.branding-title {
+    font-size: 40px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.branding-desc {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.glass-orb {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.orb-1 {
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    right: -100px;
+}
+
+.orb-2 {
+    width: 200px;
+    height: 200px;
+    bottom: 100px;
+    left: -50px;
+}
+
+.onboarding-interaction {
+    flex: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: var(--bg-surface);
+}
+
+.form-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+.form-header {
+    margin-bottom: 40px;
+}
+
+.form-header h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.form-header p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.input-group {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--text-primary);
+    background-color: var(--bg-surface);
+    transition: all 0.3s ease;
+    appearance: none; 
+}
+
+.input-group input:focus, 
+.input-group select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(45, 138, 86, 0.1);
+    outline: none;
+}
+
+.input-group select:disabled {
+    background-color: var(--bg-main);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+.custom-select-wrapper {
+    position: relative;
+}
+
+.select-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--text-secondary);
+    pointer-events: none; 
+}
+
+.error-message {
+    display: none;
+    color: var(--status-danger);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.input-group.error input {
+    border-color: var(--status-danger);
+}
+
+.input-group.error .error-message {
+    display: block;
+}
+
+.large-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: var(--primary-blue);
+    color: var(--text-light);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    transition: all 0.3s ease;
+}
+
+.large-btn:hover:not(:disabled) {
+    background-color: var(--primary-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.large-btn:disabled {
+    background-color: var(--border-color);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}

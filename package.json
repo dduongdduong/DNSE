@@ -1,0 +1,14 @@
+{
+  "name": "dnse-frontend",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Giao diện DNSE (Tailwind v4). Chỉ cần build lại CSS khi sửa class Tailwind trong js/ hoặc index.html",
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/app.css --minify",
+    "watch:css": "tailwindcss -i ./css/input.css -o ./css/app.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

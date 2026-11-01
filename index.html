@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNSE - Bách Khoa Toàn Thư Sinh Viên Đà Nẵng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/app.css">
+</head>
+<body class="bg-[#F8FAF9] text-slate-800 antialiased min-h-screen">
+    <div id="app-loading" class="min-h-screen flex items-center justify-center">
+        <div class="flex flex-col items-center gap-3 text-[#1B5836]">
+            <div class="w-10 h-10 border-4 border-[#C7E6D4] border-t-[#2D8A56] rounded-full animate-spin"></div>
+            <p class="text-xs font-semibold">Đang tải DNSE...</p>
+        </div>
+    </div>
+
+    <div id="app-shell" class="hidden min-h-screen flex flex-col">
+        <header id="app-header" class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#E2ECE5]"></header>
+
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <section id="view-dashboard" class="dnse-view hidden dnse-fade"></section>
+            <section id="view-map" class="dnse-view hidden dnse-fade"></section>
+            <section id="view-forum" class="dnse-view hidden dnse-fade"></section>
+            <section id="view-schedule" class="dnse-view hidden dnse-fade"></section>
+            <section id="view-advisor" class="dnse-view hidden dnse-fade"></section>
+        </main>
+
+        <nav id="mobile-nav" aria-label="Điều hướng chính" class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E2ECE5] px-2 pt-1.5 pb-[calc(0.375rem+env(safe-area-inset-bottom))] flex items-center justify-around"></nav>
+    </div>
+
+    <div id="modal-root"></div>
+    <div id="toast-root" class="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-[70] flex flex-col items-center gap-2 pointer-events-none"></div>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+:root {
+    --primary-blue: #2D8A56;   /* tên biến giữ nguyên, màu chính nay là xanh lá */       
+    --primary-blue-hover: #227044; 
+    --bg-main: #F8FAF9;            
+    --bg-surface: #FFFFFF;         
+    
+    /* Bảng màu Text */
+    --text-primary: #1E293B;       
+    --text-secondary: #6F767E;     
+    --text-light: #FFFFFF;         
+    
+    --status-active: #2D8A56;      
+    --status-success: #2D8A56;     
+    --status-danger: #FF6A55;     
+    
+    --border-color: #E2ECE5;       
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.02);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.04);
+    
+    --sidebar-width: 260px;
+    --border-radius-lg: 24px;      
+    --border-radius-md: 12px;      
+    
+    --font-heading: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --forest: #133924;
+}

@@ -1,0 +1,189 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    margin: 0;
+    color: var(--text-primary);
+}
+
+p, span, a {
+    margin: 0;
+}
+
+button {
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.sidebar {
+    justify-content: space-between;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.brand-text h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.brand-text span {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: block;
+    letter-spacing: 1px;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: var(--border-radius-md);
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu li a:hover {
+    background-color: var(--border-color);
+}
+
+.sidebar-menu li.active a {
+    background-color: rgba(45, 138, 86, 0.08); 
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btn-logout {
+    background: transparent;
+    color: var(--status-danger);
+    font-weight: 500;
+    font-size: 14px;
+    text-align: left;
+    padding: 12px 16px;
+}
+
+.upgrade-card {
+    background-color: #1A1D1F;
+    color: var(--text-light);
+    padding: 20px;
+    border-radius: var(--border-radius-md);
+}
+
+.upgrade-card h4 {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.upgrade-card p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-surface);
+    padding: 24px 32px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.user-greeting h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.user-greeting p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-notification {
+    background-color: var(--bg-main);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.btn-notification::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    background-color: var(--status-danger);
+    border-radius: 50%;
+}
+
+.student-badge {
+    display: flex;
+    align-items: center;
+    background-color: #1A1D1F;
+    color: var(--text-light);
+    padding: 6px 6px 6px 16px;
+    border-radius: 100px;
+    gap: 12px;
+}
+
+.student-badge .badge-text {
+    font-size: 10px;
+    text-align: right;
+    line-height: 1.2;
+}
+
+.student-badge .badge-text strong {
+    font-size: 12px;
+}
+
+.student-badge .avatar {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}

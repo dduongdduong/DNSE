@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bắt đầu cùng DNSE - Bách Khoa Toàn Thư Sinh Viên</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/variables.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    
+    <link rel="stylesheet" href="./css/onboarding.css">
+</head>
+<body>
+    <div class="onboarding-wrapper">
+        
+        <div class="onboarding-branding">
+            <div class="branding-content">
+                <div class="logo-container">
+                    <div class="mock-logo">D</div>
+                    <span class="brand-name">DNSE</span>
+                </div>
+                <h1 class="branding-title">Khám phá không gian học tập độc bản dành riêng cho bạn.</h1>
+                <p class="branding-desc">Bách khoa toàn thư DNSE tự động tinh chỉnh lộ trình, tài liệu và bản đồ số dựa trên chính chuyên ngành bạn đang theo đuổi tại Đà Nẵng.</p>
+            </div>
+            <div class="glass-orb orb-1"></div>
+            <div class="glass-orb orb-2"></div>
+        </div>
+
+        <div class="onboarding-interaction">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Chào mừng tân binh! 👋</h2>
+                    <p>Hãy cho DNSE biết một chút thông tin để chúng mình chuẩn bị không gian tốt nhất nhé.</p>
+                </div>
+
+                <form id="onboarding-form" class="step-form">
+                    
+                    <div class="input-group">
+                        <label for="student-name">Tên gọi của bạn là gì?</label>
+                        <input type="text" id="student-name" name="studentName" placeholder="VD: Dương, My, Minh, Long..." required autocomplete="off">
+                        <span class="error-message" id="name-error">Vui lòng nhập tên của bạn.</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="university-select">Trường Đại học của bạn</label>
+                        <div class="custom-select-wrapper">
+                            <select id="university-select" name="university" required>
+                                <option value="" disabled selected>Chọn trường Đại học...</option>
+                                <option value="VKU">Đại học CNTT & Truyền thông Việt - Hàn (VKU)</option>
+                                <option value="DUT">Đại học Bách Khoa Đà Nẵng (DUT)</option>
+                                <option value="DUE">Đại học Kinh tế Đà Nẵng (DUE)</option>
+                                <option value="UED">Đại học Sư phạm Đà Nẵng (UED)</option>
+                                <option value="UFLS">Đại học Ngoại ngữ Đà Nẵng (UFLS)</option>
+                                <option value="DDY">Trường Y Dược - Đại học Đà Nẵng (DDY)</option>
+                            </select>
+                            <div class="select-icon">▼</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="major-select">Chuyên ngành theo học</label>
+                        <div class="custom-select-wrapper">
+                            <select id="major-select" name="major" required disabled>
+                                <option value="" disabled selected>Vui lòng chọn trường trước...</option>
+                                </select>
+                            <div class="select-icon">▼</div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-start-journey" class="btn-primary large-btn" disabled>
+                        Bắt đầu hành trình <span class="arrow">→</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/modules/onboarding-logic.js"></script>
+</body>
+</html>
