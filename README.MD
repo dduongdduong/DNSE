@@ -205,5 +205,6 @@ Bạn mình chạy theo thứ tự: `schema.sql` > `upgrade_v2.sql` > `seed_expo
 - Không đưa `server/.env` lên GitHub hay gửi cho người khác (đã có trong `.gitignore`). Nếu có `GEMINI_API_KEY`, key này cũng nằm trong file đó.
 - Hồ sơ người dùng nằm trong bảng `Users`; `localStorage` chỉ giữ bản sao để nhớ phiên đăng nhập.
 - Chỉ cần chạy `npm install` ở thư mục gốc và `npm run build:css` khi bạn sửa class Tailwind. Chạy app bình thường thì không cần.
-#   D N S E  
+#   D N S E
+ 
  
