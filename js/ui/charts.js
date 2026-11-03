@@ -97,3 +97,21 @@ export function initChartTips() {
         tip.style.top = (e.clientY + 14) + 'px';
     });
 }
+
+// Đồng hồ nửa vòng cho GPA (thang 4) với các mốc Khá / Giỏi / Xuất sắc
+export function gaugeChart(gpa) {
+    const cx = 120, cy = 112, r = 88, len = Math.PI * r;
+    const color = gpa >= 3.6 ? '#059669' : gpa >= 3.2 ? GREEN : gpa >= 2.5 ? '#F59E0B' : '#F43F5E';
+    const pos = (v, rad) => { const a = Math.PI * (1 - v / 4); return [cx + rad * Math.cos(a), cy - rad * Math.sin(a)]; };
+    let s = `<svg viewBox="0 0 240 142" class="w-full" role="img" aria-label="GPA dự báo ${gpa.toFixed(2)} trên thang 4">`;
+    s += `<path d="M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}" fill="none" stroke="#DDEBE2" stroke-width="16" stroke-linecap="round"/>`;
+    s += `<path d="M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}" fill="none" stroke="${color}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${(len * Math.min(gpa, 4)) / 4} ${len}" style="transition:stroke-dasharray .6s ease"/>`;
+    [[2.5, 'Khá'], [3.2, 'Giỏi'], [3.6, 'XS']].forEach(([v, label]) => {
+        const [x1, y1] = pos(v, r - 13), [x2, y2] = pos(v, r + 13), [tx, ty] = pos(v, r + 22);
+        s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#fff" stroke-width="2"/><text x="${tx}" y="${ty + 3}" text-anchor="middle" font-size="9" fill="#64748B" font-weight="600">${label}</text>`;
+    });
+    s += `<text x="${cx}" y="${cy - 14}" text-anchor="middle" font-size="40" font-weight="800" fill="#133924" font-family="JetBrains Mono, monospace">${gpa.toFixed(2)}</text>`;
+    s += `<text x="${cx}" y="${cy + 6}" text-anchor="middle" font-size="11" fill="#64748B">trên thang 4.0</text>`;
+    s += `<text x="${cx - r}" y="${cy + 22}" text-anchor="middle" font-size="9" fill="#94A3B8">0</text><text x="${cx + r}" y="${cy + 22}" text-anchor="middle" font-size="9" fill="#94A3B8">4.0</text>`;
+    return s + '</svg>';
+}

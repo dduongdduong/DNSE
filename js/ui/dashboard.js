@@ -1,9 +1,69 @@
 import { state, views, actions, esc, icon, toggleDone, todaySchedules } from './core.js';
-import { timeAgo, todayNumber } from './time.js';
+import { timeAgo, todayNumber, toMinutes, formatDuration } from './time.js';
 import { progressWidget, gpaWidget, pomodoroWidget } from './widgets.js';
 
 export const CAT_LABEL = { coffee: 'Cà phê', food: 'Quán ăn', study: 'In ấn', store: 'Cửa hàng', hostel: 'Nhà trọ' };
 export const ratingText = r => (r != null ? `★ ${Number(r).toFixed(1)}` : 'Mới');
+
+let showAllToday = false;
+actions['today-all'] = () => { showAllToday = !showAllToday; refreshToday(); };
+
+// Trạng thái từng ca so với giờ hiện tại: đang diễn ra / sắp tới / đã qua / đã học xong
+function classify(list) {
+    const now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
+    let nextFound = false;
+    return list.map(i => {
+        const s = toMinutes(i.startTime), e = toMinutes(i.endTime);
+        if (i.completed) return { ...i, st: 'done' };
+        if (nowMin >= s && nowMin < e) return { ...i, st: 'live', note: `còn ${formatDuration(e - nowMin)}` };
+        if (nowMin < s) { const st = nextFound ? 'later' : 'next'; nextFound = true; return { ...i, st, note: `sau ${formatDuration(s - nowMin)}` }; }
+        return { ...i, st: 'past' };
+    });
+}
+
+function todayPanel() {
+    const all = classify(todaySchedules());
+    const active = all.filter(i => i.st === 'live' || i.st === 'next' || i.st === 'later');
+    const rest = all.filter(i => !active.includes(i));
+    const list = showAllToday ? all : active.slice(0, 4);
+    const hidden = showAllToday ? 0 : all.length - list.length;
+
+    const card = i => {
+        const live = i.st === 'live', next = i.st === 'next', done = i.st === 'done', past = i.st === 'past';
+        const box = live ? 'bg-[#E3F3EA] border-[#2D8A56] ring-2 ring-[#2D8A56]/20 shadow-sm'
+            : next ? 'bg-[#F2F9F5] border-[#C7E6D4]'
+            : done ? 'bg-slate-50 border-slate-200 opacity-60'
+            : past ? 'bg-slate-50 border-slate-200 opacity-70' : 'bg-[#F8FAF9] border-[#E2ECE5] hover:border-[#C7E6D4]';
+        const badge = live ? `<span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold text-white bg-[#2D8A56] px-2 py-0.5 rounded-full uppercase tracking-wide"><span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span></span>Đang diễn ra · ${i.note}</span>`
+            : next ? `<span class="text-[10px] font-bold text-[#1B5836] bg-white border border-[#C7E6D4] px-2 py-0.5 rounded-full uppercase tracking-wide">Sắp tới · ${i.note}</span>`
+            : past ? '<span class="text-[10px] font-semibold text-slate-500 bg-slate-200/70 px-2 py-0.5 rounded-full uppercase">Đã qua</span>'
+            : done ? '<span class="text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full uppercase">Đã học xong</span>' : '';
+        return `
+        <div class="relative p-3 rounded-xl border transition-all flex items-start justify-between gap-2 ${box}">
+          ${live ? '<span class="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-[#2D8A56]"></span>' : ''}
+          <div class="min-w-0 ${live ? 'pl-1.5' : ''}">
+            ${badge ? `<div class="mb-1.5">${badge}</div>` : ''}
+            <div class="flex items-center gap-2 flex-wrap"><span class="text-xs font-bold font-mono ${live ? 'text-white bg-[#2D8A56]' : 'text-[#2D8A56] bg-[#E3F3EA]'} px-2 py-0.5 rounded-md">${esc(i.startTime)} - ${esc(i.endTime)}</span><span class="text-xs ${live ? 'text-slate-700 font-bold' : 'text-slate-500 font-semibold'}">${esc(i.room)}</span></div>
+            <h4 class="mt-1.5 ${live ? 'text-sm md:text-base font-extrabold text-[#133924]' : 'text-xs md:text-sm font-bold text-slate-800'} ${done ? 'line-through text-slate-500' : ''}">${esc(i.subject)}</h4>
+            <p class="text-[11px] ${live ? 'text-slate-600' : 'text-slate-400'} mt-0.5 flex items-center gap-1">${icon('building', 'w-3 h-3')}${esc(i.building)}</p>
+          </div>
+          <button data-action="toggle-today" data-id="${i.id}" class="p-1 rounded-lg transition-colors cursor-pointer shrink-0 ${i.completed ? 'text-emerald-600' : live ? 'text-[#2D8A56] hover:text-[#1B5836]' : 'text-slate-300 hover:text-slate-500'}" title="${i.completed ? 'Bỏ đánh dấu' : 'Đánh dấu đã học'}">${icon('circle-check', 'w-5 h-5')}</button>
+        </div>`;
+    };
+
+    return `
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-base font-bold text-[#133924] flex items-center gap-2">${icon('clock', 'w-4 h-4 text-[#2D8A56]')}Lịch Học Hôm Nay</h3>
+      <button data-action="tab" data-tab="schedule" class="text-xs font-semibold text-[#2D8A56] hover:text-[#1B5836] cursor-pointer">Toàn bộ lịch ↗</button>
+    </div>
+    ${all.length === 0 ? '<p class="text-xs text-slate-500 py-4 text-center">Hôm nay không có lịch học!</p>'
+      : list.length === 0 ? '<p class="text-xs text-emerald-700 py-3 text-center font-semibold">Bạn đã xong hoặc đã qua hết các ca hôm nay 🎉</p>'
+      : `<div class="space-y-2.5">${list.map(card).join('')}</div>`}
+    ${all.length && (hidden > 0 || showAllToday) ? `<button data-action="today-all" class="w-full text-center text-[11px] font-semibold text-[#2D8A56] pt-2.5 cursor-pointer">${showAllToday ? 'Chỉ xem ca đang và sắp diễn ra' : `Xem cả ${hidden} ca đã qua / đã xong`}</button>` : ''}`;
+}
+
+function refreshToday() { const el = document.getElementById('today-panel'); if (el) el.innerHTML = todayPanel(); }
+setInterval(() => { if (state.tab === 'dashboard') refreshToday(); }, 30000);   // cập nhật "đang diễn ra" theo giờ
 
 actions['toggle-today'] = (el) => toggleDone(Number(el.dataset.id), todayNumber());
 
@@ -24,7 +84,6 @@ views.dashboard = {
     render(root) {
         const u = state.user, d = state.dashboard, w = d.widget;
         const today = todaySchedules();
-        const shown = today.slice(0, 4);
         const myPlaces = state.places.filter(p => p.universityCode === u.university);
         const nearby = myPlaces.slice(0, 3);
         const hot = hotPosts();
@@ -101,21 +160,7 @@ views.dashboard = {
             <div class="space-y-6 min-w-0">
               ${pomodoroWidget()}
 
-              <div class="p-5 bg-white border border-[#E2ECE5] rounded-2xl shadow-2xs">
-                <div class="flex items-center justify-between mb-4">
-                  <h3 class="text-base font-bold text-[#133924] flex items-center gap-2">${icon('clock', 'w-4 h-4 text-[#2D8A56]')}Lịch Học Hôm Nay</h3>
-                  <button data-action="tab" data-tab="schedule" class="text-xs font-semibold text-[#2D8A56] hover:text-[#1B5836] cursor-pointer">Toàn bộ lịch ↗</button>
-                </div>
-                ${shown.length === 0 ? '<p class="text-xs text-slate-500 py-4 text-center">Hôm nay không có lịch học!</p>' : `<div class="space-y-2.5">${shown.map(i => `
-                  <div class="p-3 rounded-xl border transition-all flex items-start justify-between gap-2 ${i.completed ? 'bg-slate-50 border-slate-200 opacity-60' : 'bg-[#F8FAF9] border-[#E2ECE5] hover:border-[#C7E6D4]'}">
-                    <div class="min-w-0">
-                      <div class="flex items-center gap-2 flex-wrap"><span class="text-xs font-bold font-mono text-[#2D8A56] bg-[#E3F3EA] px-2 py-0.5 rounded-md">${esc(i.startTime)} - ${esc(i.endTime)}</span><span class="text-xs text-slate-500 font-semibold">${esc(i.room)}</span></div>
-                      <h4 class="text-xs md:text-sm font-bold mt-1.5 ${i.completed ? 'line-through text-slate-500' : 'text-slate-800'}">${esc(i.subject)}</h4>
-                      <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">${icon('building', 'w-3 h-3')}${esc(i.building)}</p>
-                    </div>
-                    <button data-action="toggle-today" data-id="${i.id}" class="p-1 rounded-lg transition-colors cursor-pointer shrink-0 ${i.completed ? 'text-emerald-600' : 'text-slate-300 hover:text-slate-500'}" title="${i.completed ? 'Đánh dấu chưa hoàn thành' : 'Đánh dấu đã học'}">${icon('circle-check', 'w-5 h-5')}</button>
-                  </div>`).join('')}${today.length > 4 ? `<button data-action="tab" data-tab="schedule" class="w-full text-center text-[11px] font-semibold text-[#2D8A56] py-1 cursor-pointer">+ ${today.length - 4} ca nữa trong ngày</button>` : ''}</div>`}
-              </div>
+              <div id="today-panel" class="p-5 bg-white border border-[#E2ECE5] rounded-2xl shadow-2xs">${todayPanel()}</div>
 
               <div class="p-5 bg-white border border-[#E2ECE5] rounded-2xl shadow-2xs">
                 <h3 class="text-base font-bold text-[#133924] flex items-center gap-2 mb-3">${icon('calendar', 'w-4 h-4 text-[#2D8A56]')}Sự Kiện Nổi Bật Sắp Tới</h3>

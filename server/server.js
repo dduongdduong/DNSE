@@ -14,7 +14,6 @@ app.use(express.json({ limit: '100kb' }));
 
 app.use('/api', routes);
 
-// Chỉ phục vụ phần giao diện, không để lộ server/ (chứa .env) và database/
 ['css', 'js', 'assets'].forEach(dir => {
     app.use('/' + dir, express.static(path.join(WEB_ROOT, dir)));
 });
@@ -22,7 +21,6 @@ app.get('/', (req, res) => res.sendFile(path.join(WEB_ROOT, 'index.html')));
 app.get('/index.html', (req, res) => res.sendFile(path.join(WEB_ROOT, 'index.html')));
 app.get('/onboarding.html', (req, res) => res.sendFile(path.join(WEB_ROOT, 'onboarding.html')));
 
-// JSON gửi lên sai định dạng
 app.use((err, req, res, next) => {
     if (err.type === 'entity.parse.failed') return res.status(400).json({ error: 'JSON không hợp lệ' });
     if (err.type === 'entity.too.large') return res.status(413).json({ error: 'Dữ liệu gửi lên quá lớn' });

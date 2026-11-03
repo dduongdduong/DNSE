@@ -1,6 +1,6 @@
 import { state, actions, inputs, esc, icon, toast, addScheduleItem, occurrences, renderCurrent } from './core.js';
 import { DAY_LABEL, todayNumber, toMinutes, pad } from './time.js';
-import { barChart, lineChart, radarChart } from './charts.js';
+import { barChart, lineChart, radarChart, gaugeChart } from './charts.js';
 
 // =====================================================================
 // 1. Tiến độ học tập (số liệu thật từ Schedules + ScheduleDone)
@@ -65,12 +65,13 @@ const LETTER_LABEL = { A: 'A (4.0 - Xuất sắc)', 'B+': 'B+ (3.5 - Giỏi)', B
 const letterFor = s => (s >= 3.7 ? 'A' : s >= 3.3 ? 'B+' : s >= 2.8 ? 'B' : s >= 2.3 ? 'C+' : s >= 1.8 ? 'C' : s >= 1.3 ? 'D+' : s >= 0.8 ? 'D' : 'F');
 const GOOD = 3.2;   // ngưỡng loại Giỏi, dùng làm đường tham chiếu trên radar
 
-let gpaTab = 'radar', effort = 1.0, subjects = null, gpaNotice = '';
+let gpaTab = 'overview', effort = 1.0, subjects = null, gpaNotice = '';
 const gpaKey = () => `dnse_gpa_${state.user.id}`;
 
 function defaultSubjects() {
     const names = [...new Set(state.week.map(s => s.subject))].map(n => (n.includes('(') ? n.split('(')[0].trim() : n));
-    const list = (names.length >= 3 ? names : ['Môn học 1', 'Môn học 2', 'Môn học 3']).slice(0, 6);
+    const list = names.slice(0, 6);
+    while (list.length < 5) list.push(`Môn học ${list.length + 1}`);
     return list.map((name, i) => ({ id: `s${i}`, name: name.slice(0, 40), credits: 3, score: 3.5, letter: 'B+' }));
 }
 function loadSubjects() {
@@ -91,25 +92,49 @@ export function gpaWidget() {
 
     const tabBtn = (id, label, ic) => `<button data-action="gpa-tab" data-tab-id="${id}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${gpaTab === id ? 'bg-white text-[#133924] shadow-xs' : 'text-slate-600 hover:text-slate-900'}">${icon(ic, 'w-3.5 h-3.5 text-[#2D8A56]')}${label}</button>`;
 
-    const radar = `
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-5 items-center">
-        <div class="md:col-span-3 h-72">${radarChart(eff)}</div>
-        <div class="md:col-span-2 space-y-3">
-          <div class="p-4 rounded-2xl bg-[#F2F9F5] border border-[#C7E6D4]">
-            <div class="text-[11px] font-bold text-[#1B5836] uppercase tracking-wider">GPA dự báo (thang 4)</div>
-            <div class="flex items-end gap-2 mt-1"><span class="text-4xl font-black font-mono text-[#133924]">${gpa.toFixed(2)}</span><span class="text-xs text-slate-500 mb-1.5 font-mono">≈ ${(gpa * 2.5).toFixed(2)} / 10</span></div>
-            <span class="inline-block mt-2 px-2.5 py-0.5 rounded-lg border text-xs font-bold ${cls.c}">${cls.l}</span>
+    const tone = v => (v >= 3.6 ? { bar: 'bg-emerald-600', txt: 'text-emerald-700' } : v >= 3.2 ? { bar: 'bg-[#2D8A56]', txt: 'text-[#1B5836]' } : v >= 2.5 ? { bar: 'bg-amber-500', txt: 'text-amber-700' } : { bar: 'bg-rose-500', txt: 'text-rose-600' });
+    const slider = `
+      <div>
+        <label class="flex items-center justify-between text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1"><span>Nỗ lực học kỳ tới</span><span id="gpa-effort-label" class="font-mono text-[#2D8A56]">${effort >= 1 ? '+' : ''}${Math.round((effort - 1) * 100)}%</span></label>
+        <input type="range" min="0.8" max="1.15" step="0.01" value="${effort}" data-input="gpa-effort-live" data-change="gpa-effort" class="w-full accent-[#2D8A56] cursor-pointer">
+        <div class="flex justify-between text-[10px] text-slate-400 font-mono"><span>-20%</span><span>0</span><span>+15%</span></div>
+      </div>`;
+
+    const overview = `
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-5 items-start">
+        <div class="md:col-span-2 p-4 rounded-2xl bg-[#F2F9F5] border border-[#C7E6D4] space-y-3">
+          <div class="text-[11px] font-bold text-[#1B5836] uppercase tracking-wider text-center">GPA dự báo (thang 4)</div>
+          <div class="w-full max-w-[260px] mx-auto">${gaugeChart(gpa)}</div>
+          <div class="text-center -mt-1">
+            <span class="inline-block px-3 py-1 rounded-lg border text-xs font-bold ${cls.c}">${cls.l}</span>
             <p class="text-[11px] text-slate-600 mt-2 leading-relaxed">${cls.a}</p>
+            <p class="text-[11px] text-slate-400 mt-1 font-mono">≈ ${(gpa * 2.5).toFixed(2)} / 10 · ${credits} tín chỉ</p>
           </div>
+          ${slider}
+        </div>
+        <div class="md:col-span-3 space-y-3">
+          <div class="flex items-center justify-between text-[11px] text-slate-500"><span class="font-bold uppercase tracking-wider text-slate-600">Điểm từng môn (thang 4)</span>
+            <span class="flex items-center gap-1.5"><span class="inline-block w-0.5 h-3 bg-slate-700"></span>Ngưỡng Giỏi ${GOOD}</span></div>
+          ${subs.map((s, i) => { const v = eff[i].score, tn = tone(v); return `
           <div>
-            <label class="flex items-center justify-between text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1"><span>Nỗ lực học kỳ tới</span><span id="gpa-effort-label" class="font-mono text-[#2D8A56]">${effort >= 1 ? '+' : ''}${Math.round((effort - 1) * 100)}%</span></label>
-            <input type="range" min="0.8" max="1.15" step="0.01" value="${effort}" data-input="gpa-effort-live" data-change="gpa-effort" class="w-full accent-[#2D8A56] cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-400 font-mono"><span>-20%</span><span>0</span><span>+15%</span></div>
+            <div class="flex items-center justify-between gap-2 text-xs mb-1">
+              <span class="font-semibold text-slate-800 truncate">${esc(s.name)} <span class="text-slate-400 font-normal">· ${s.credits} TC</span></span>
+              <span class="font-mono font-bold ${tn.txt} shrink-0">${letterFor(v)} · ${v.toFixed(2)}</span>
+            </div>
+            <div class="relative h-3 rounded-full bg-[#E9F1EC] overflow-hidden"><div class="h-full rounded-full ${tn.bar} transition-all duration-500" style="width:${(v / 4) * 100}%"></div>
+              <span class="absolute top-0 bottom-0 w-0.5 bg-slate-700/70" style="left:${(GOOD / 4) * 100}%"></span></div>
+          </div>`; }).join('')}
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 text-[10px] text-slate-500">
+            <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm bg-emerald-600 inline-block"></i>≥ 3.6 Xuất sắc</span><span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm bg-[#2D8A56] inline-block"></i>3.2 - 3.59 Giỏi</span><span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></i>2.5 - 3.19 Khá</span><span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></i>&lt; 2.5</span>
           </div>
-          <div class="flex items-center gap-3 text-[11px] text-slate-500"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#2D8A56] inline-block"></span>Điểm của bạn</span><span class="flex items-center gap-1.5"><span class="w-3 border-t border-dashed border-slate-400 inline-block"></span>Ngưỡng Giỏi (${GOOD})</span></div>
         </div>
       </div>
-      <p class="mt-3 text-[11px] text-slate-400">Điểm đang là điểm mẫu. Mở tab "Bảng điểm" để nhập điểm thật của từng môn, GPA sẽ tự tính lại.</p>`;
+      <p class="mt-4 text-[11px] text-slate-400">Điểm đang là điểm mẫu. Mở tab "Bảng điểm" để nhập điểm thật của từng môn, GPA sẽ tự tính lại.</p>`;
+
+    const radar = subs.length < 4
+        ? `<div class="py-10 text-center text-xs text-slate-500">Biểu đồ radar cần từ 4 môn trở lên mới dễ đọc. Hãy thêm môn ở tab "Bảng điểm".</div>`
+        : `<div class="grid grid-cols-1 md:grid-cols-5 gap-5 items-center"><div class="md:col-span-3 h-80">${radarChart(eff)}</div>
+           <div class="md:col-span-2 space-y-3">${slider}<div class="flex items-center gap-3 text-[11px] text-slate-500"><span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-[#2D8A56] inline-block"></span>Điểm của bạn</span><span class="flex items-center gap-1.5"><span class="w-3 border-t border-dashed border-slate-400 inline-block"></span>Ngưỡng Giỏi (${GOOD})</span></div></div></div>`;
 
     const table = `
       <div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-100"><th class="py-2 px-3">Môn học</th><th class="py-2 px-2 text-center">Tín chỉ</th><th class="py-2 px-3 text-center">Điểm chữ</th><th class="py-2 px-3 text-center">Hệ 4</th><th class="py-2 px-2 text-center">Đóng góp</th><th></th></tr></thead>
@@ -137,9 +162,9 @@ export function gpaWidget() {
           <h3 class="text-base font-bold text-[#133924] flex items-center gap-2">${icon('award', 'w-4 h-4 text-[#2D8A56]')}Dự Báo GPA & Radar Năng Lực Môn Học</h3>
           <p class="text-xs text-slate-500 mt-0.5">Nhập điểm từng môn để xem GPA dự báo và học bổng có thể đạt</p>
         </div>
-        <div class="flex items-center gap-1 p-1 bg-[#F0F6F2] rounded-xl self-start sm:self-auto">${tabBtn('radar', 'Biểu Đồ Radar', 'radar')}${tabBtn('table', 'Bảng Điểm', 'calculator')}</div>
+        <div class="flex items-center gap-1 p-1 bg-[#F0F6F2] rounded-xl self-start sm:self-auto">${tabBtn('overview', 'Tổng Quan', 'chart-column')}${tabBtn('radar', 'Radar', 'radar')}${tabBtn('table', 'Bảng Điểm', 'calculator')}</div>
       </div>
-      ${gpaTab === 'radar' ? radar : table}
+      ${gpaTab === 'radar' ? radar : gpaTab === 'table' ? table : overview}
     </div>`;
 }
 
