@@ -17,7 +17,6 @@ const config = {
 
 let poolPromise = null;
 
-// Dùng chung 1 connection pool cho toàn server; nếu kết nối lỗi thì lần gọi sau sẽ thử lại
 function getPool() {
     if (!poolPromise) {
         poolPromise = new sql.ConnectionPool(config).connect().catch(err => {

@@ -279,7 +279,6 @@ router.get('/schedule', wrap(async (req, res) => {
     res.json(r.recordset.map(mapSchedule));
 }));
 
-// Cả tuần + các ngày đã đánh dấu "đã học" trong tuần bắt đầu từ weekStart (thứ 2, do trình duyệt gửi lên)
 router.get('/schedule/week', wrap(async (req, res) => {
     const pool = await getPool();
     const weekStart = parseDateStr(req.query.weekStart, 'weekStart');
@@ -312,7 +311,6 @@ router.get('/schedule/week', wrap(async (req, res) => {
     res.json(items.recordset.map(s => ({ ...mapSchedule(s), doneDates: doneByItem[s.Id] || [] })));
 }));
 
-// Tỷ lệ hoàn thành 5 tuần gần nhất (tuần cuối = tuần chứa weekStart) cho biểu đồ ở trang tổng quan
 router.get('/schedule/stats', wrap(async (req, res) => {
     const pool = await getPool();
     const weekStart = parseDateStr(req.query.weekStart, 'weekStart');
@@ -387,7 +385,6 @@ router.delete('/schedule/:id', wrap(async (req, res) => {
     res.json({ ok: true });
 }));
 
-// Bật / tắt "đã học" cho một buổi trong một ngày cụ thể
 router.post('/schedule/:id/done', wrap(async (req, res) => {
     const pool = await getPool();
     const id = toInt(req.params.id);
@@ -450,8 +447,6 @@ router.get('/places', wrap(async (req, res) => {
     res.json(r.recordset.map(mapPlace));
 }));
 
-// Sinh viên đóng góp địa điểm cho trường của mình. Chưa có tọa độ chính xác nên ghim tạm ở trường,
-// giao diện sẽ tìm theo tên + địa chỉ khi mở bản đồ.
 router.post('/places', wrap(async (req, res) => {
     const pool = await getPool();
     const userId = toInt(req.body.userId, 'userId');
@@ -687,9 +682,6 @@ router.delete('/comments/:id', wrap(async (req, res) => {
     if (!r.rowsAffected[0]) throw new HttpError(403, 'Bạn chỉ xóa được bình luận của chính mình');
     res.json({ ok: true });
 }));
-
-
-// ---------- AI (key Gemini nằm ở server/.env, không gửi xuống trình duyệt)
 
 const aiLimiter = rateLimit({ windowMs: 60 * 1000, max: 15 });
 

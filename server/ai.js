@@ -282,10 +282,10 @@ function normalizeTools(raw, p) {
     };
 }
 
-const toolsCache = new Map();   // key -> { at, ttl, data }
-const OK_TTL = 6 * 60 * 60 * 1000;     // kết quả AI giữ 6 giờ
-const LOCAL_TTL = 60 * 1000;           // kết quả dự phòng chỉ giữ 1 phút để AI hồi lại là dùng được ngay
-const REFRESH_COOLDOWN = 20 * 1000;    // bấm "Làm mới" liên tục thì trả lại kết quả vừa có
+const toolsCache = new Map();  
+const OK_TTL = 6 * 60 * 60 * 1000;    
+const LOCAL_TTL = 60 * 1000;           
+const REFRESH_COOLDOWN = 20 * 1000;  
 
 async function toolsAdvice(profile, { refresh = false } = {}) {
     const key = `${clean(profile.university, 10)}|${clean(profile.majorCode, 20)}`;
