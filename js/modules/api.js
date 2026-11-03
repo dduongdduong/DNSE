@@ -1,7 +1,4 @@
 import { api } from './api-client.js';
-
-// AI chạy ở server (/api/ai/*): API key nằm trong server/.env, trình duyệt không giữ key nào.
-
 /**
  * Chat với DNSE AI
  * @returns {{reply: string, source: 'ai'|'local'|'error'}}

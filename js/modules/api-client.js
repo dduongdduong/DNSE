@@ -1,5 +1,3 @@
-// Gọi backend (Express + SQL Server). Mở qua http://localhost:3000 thì dùng đường dẫn tương đối;
-// mở bằng Live Server / file thì trỏ thẳng về cổng 3000.
 const API_BASE = location.port === '3000' ? '/api' : 'http://localhost:3000/api';
 
 async function request(path, method = 'GET', body) {
