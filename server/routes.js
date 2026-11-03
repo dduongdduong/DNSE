@@ -709,7 +709,6 @@ router.post('/ai/tools-advice', aiLimiter, wrap(async (req, res) => {
     const user = await getUserOrFail(pool, toInt(req.body.userId, 'userId'));
     const data = await ai.toolsAdvice(aiProfile(user), { refresh: req.body.refresh === true });
 
-    // Link tài liệu do server dựng từ dữ liệu thật (website trường), không dùng link do AI tự nghĩ ra
     const uni = await pool.request()
         .input('code', sql.NVarChar(10), user.UniversityCode)
         .query('SELECT ShortName, Website FROM dbo.Universities WHERE Code = @code');
@@ -727,8 +726,6 @@ router.post('/ai/tools-advice', aiLimiter, wrap(async (req, res) => {
         source: data.source
     });
 }));
-
-// ---------- Trạng thái CSDL (chỉ xem được từ chính máy đang chạy server)
 
 const STATUS_TABLES = ['Universities', 'Majors', 'Users', 'Schedules', 'ScheduleDone', 'Events', 'News',
                        'DashboardWidgets', 'Places', 'ForumPosts', 'ForumComments', 'PostLikes'];
