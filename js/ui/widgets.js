@@ -2,9 +2,6 @@ import { state, actions, inputs, esc, icon, toast, addScheduleItem, occurrences,
 import { DAY_LABEL, todayNumber, toMinutes, pad } from './time.js';
 import { barChart, lineChart, radarChart, gaugeChart } from './charts.js';
 
-// =====================================================================
-// 1. Tiến độ học tập (số liệu thật từ Schedules + ScheduleDone)
-// =====================================================================
 let chartType = 'bar';
 actions['chart-type'] = (el) => { chartType = el.dataset.type; renderCurrent(); };
 
@@ -57,13 +54,10 @@ export function progressWidget() {
     </div>`;
 }
 
-// =====================================================================
-// 2. Dự báo GPA (bảng điểm do sinh viên tự nhập, lưu trong trình duyệt)
-// =====================================================================
 const LETTERS = { A: 4.0, 'B+': 3.5, B: 3.0, 'C+': 2.5, C: 2.0, 'D+': 1.5, D: 1.0, F: 0 };
 const LETTER_LABEL = { A: 'A (4.0 - Xuất sắc)', 'B+': 'B+ (3.5 - Giỏi)', B: 'B (3.0 - Khá)', 'C+': 'C+ (2.5 - TB Khá)', C: 'C (2.0 - Trung bình)', 'D+': 'D+ (1.5 - TB Yếu)', D: 'D (1.0 - Đạt)', F: 'F (0.0 - Trượt)' };
 const letterFor = s => (s >= 3.7 ? 'A' : s >= 3.3 ? 'B+' : s >= 2.8 ? 'B' : s >= 2.3 ? 'C+' : s >= 1.8 ? 'C' : s >= 1.3 ? 'D+' : s >= 0.8 ? 'D' : 'F');
-const GOOD = 3.2;   // ngưỡng loại Giỏi, dùng làm đường tham chiếu trên radar
+const GOOD = 3.2;   
 
 let gpaTab = 'overview', effort = 1.0, subjects = null, gpaNotice = '';
 const gpaKey = () => `dnse_gpa_${state.user.id}`;
@@ -181,9 +175,6 @@ actions['gpa-remove'] = (el) => { if (loadSubjects().length <= 3) { toast('Biể
 actions['gpa-save'] = () => { try { localStorage.setItem(gpaKey(), JSON.stringify(loadSubjects())); gpaNotice = 'Đã lưu bảng điểm'; } catch (e) { toast('Không lưu được bảng điểm', 'error'); } renderCurrent(); setTimeout(() => { gpaNotice = ''; renderCurrent(); }, 2200); };
 actions['gpa-reset'] = () => { subjects = defaultSubjects(); localStorage.removeItem(gpaKey()); gpaNotice = 'Đã khôi phục danh sách mặc định'; renderCurrent(); setTimeout(() => { gpaNotice = ''; renderCurrent(); }, 2200); };
 
-// =====================================================================
-// 3. Pomodoro (tự ghi nhận ca học vào Lịch học thật trong SQL Server)
-// =====================================================================
 const MODES = {
     pomodoro25: { label: '25m Tập trung', minutes: 25, brk: false },
     pomodoro50: { label: '50m Chuyên sâu', minutes: 50, brk: false },

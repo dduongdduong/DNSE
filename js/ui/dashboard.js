@@ -8,7 +8,6 @@ export const ratingText = r => (r != null ? `★ ${Number(r).toFixed(1)}` : 'M�
 let showAllToday = false;
 actions['today-all'] = () => { showAllToday = !showAllToday; refreshToday(); };
 
-// Trạng thái từng ca so với giờ hiện tại: đang diễn ra / sắp tới / đã qua / đã học xong
 function classify(list) {
     const now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
     let nextFound = false;

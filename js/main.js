@@ -21,7 +21,6 @@ function saveLocalProfile(user) {
     return profile;
 }
 
-// Hồ sơ cũ (chưa có id, hoặc id không còn trong DB) sẽ được đăng ký lại tự động
 async function ensureUser(stored) {
     if (stored.id) {
         try { return saveLocalProfile(await api.get(`/users/${stored.id}`)); }
@@ -70,10 +69,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hash = location.hash.replace('#', '');
     setTab(TABS.includes(ALIAS[hash] || hash) ? (ALIAS[hash] || hash) : 'dashboard');
 
-    // Dữ liệu nặng tải nền, xong tới đâu vẽ lại tới đó
     Promise.all([loadSchedule(), loadPlaces(), loadPosts()]).then(renderCurrent);
 
-    // Cập nhật ca học kế tiếp / đếm ngược mỗi phút
     setInterval(() => { if (state.tab === 'schedule') renderCurrent(); }, 60000);
     window.addEventListener('hashchange', () => {
         const h = location.hash.replace('#', ''), t = ALIAS[h] || h;

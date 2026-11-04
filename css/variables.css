@@ -1,10 +1,9 @@
 :root {
-    --primary-blue: #2D8A56;   /* tên biến giữ nguyên, màu chính nay là xanh lá */       
+    --primary-blue: #2D8A56;    
     --primary-blue-hover: #227044; 
     --bg-main: #F8FAF9;            
     --bg-surface: #FFFFFF;         
     
-    /* Bảng màu Text */
     --text-primary: #1E293B;       
     --text-secondary: #6F767E;     
     --text-light: #FFFFFF;         

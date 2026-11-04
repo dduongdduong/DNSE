@@ -53,7 +53,6 @@ function toMinutes(hhmm) {
     return h * 60 + m;
 }
 
-// Chỉ nhận chuỗi YYYY-MM-DD hợp lệ; ngày được truyền dưới dạng chuỗi để không bị lệch múi giờ
 function parseDateStr(value, label) {
     const s = typeof value === 'string' ? value.trim() : '';
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
@@ -64,7 +63,6 @@ function parseDateStr(value, label) {
     return s;
 }
 
-// Giới hạn số lần gọi AI trên mỗi IP để không cạn quota của API key
 function rateLimit({ windowMs, max }) {
     const hits = new Map();
     setInterval(() => {
@@ -194,7 +192,6 @@ router.get('/dashboard', wrap(async (req, res) => {
             SELECT TOP 5 Category, Title, CreatedAt
             FROM dbo.News
             ORDER BY CreatedAt DESC`),
-        // Bài nổi bật = nhiều tim + bình luận thật; bài chưa có tương tác thì không được gọi là "hot"
         pool.request().query(`
             SELECT TOP 2 Id, Title, Likes, CommentCount FROM (
                 SELECT p.Id, p.CreatedAt, LEFT(p.Content, 160) AS Title,
@@ -240,13 +237,12 @@ router.get('/dashboard', wrap(async (req, res) => {
     });
 }));
 
-// Lịch của một người = lịch chung theo ngành (UserId NULL) + lịch cá nhân tự thêm
 const SCHEDULE_VISIBLE = `((UserId IS NULL AND (MajorCode IS NULL OR MajorCode = @major)) OR UserId = @uid)`;
 
 function mapSchedule(s) {
     return {
         id: s.Id,
-        dayOfWeek: s.DayOfWeek,          // 1 = Thứ 2 ... 6 = Thứ 7, 7 = Chủ nhật, null = mọi ngày
+        dayOfWeek: s.DayOfWeek,         
         startTime: s.StartTime,
         endTime: s.EndTime,
         subject: s.Subject,
@@ -736,7 +732,7 @@ router.get('/status', wrap(async (req, res) => {
                 const c = await pool.request().query(`SELECT COUNT(*) AS n FROM dbo.${name}`);
                 tables.push({ name, rows: c.recordset[0].n });
             } catch (e) {
-                tables.push({ name, rows: null });   // bảng chưa tồn tại: chưa chạy upgrade_v2.sql
+                tables.push({ name, rows: null });  
             }
         }
         const i = info.recordset[0];

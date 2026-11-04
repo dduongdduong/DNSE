@@ -50,7 +50,6 @@ function catBar() {
     }).join('');
 }
 
-// Google Maps nhúng: mặc định hiện khu vực trường đang chọn, bấm vào địa điểm thì bản đồ dời tới đó
 function embedQuery() {
     const sel = state.places.find(p => p.id === M.selected);
     if (sel) {

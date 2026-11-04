@@ -5,23 +5,22 @@ import { icon } from './icons.js';
 export const esc = escapeHtml;
 export { enc, api, icon };
 
-// ------------------------------------------------------------ trạng thái dùng chung
 export const state = {
     user: null,
     tab: 'dashboard',
     universities: [],
     dashboard: { widget: null, events: [], news: [], hotPosts: [] },
-    week: [],              // lịch cả tuần của người dùng (kèm doneDates)
-    stats: [],             // 5 tuần gần nhất cho biểu đồ
-    places: [],            // địa điểm của mọi trường
+    week: [],             
+    stats: [],            
+    places: [],            
     posts: [],
-    comments: {},          // postId -> bình luận đã tải
+    comments: {},
     ready: { schedule: false, places: false, posts: false }
 };
 
-export const views = {};                    // tên tab -> { render() }
-export const actions = {};                  // data-action -> hàm xử lý
-export const inputs = {};                   // data-input -> hàm xử lý
+export const views = {};                  
+export const actions = {};               
+export const inputs = {};                 
 
 export function renderView(name) {
     const v = views[name];
@@ -43,7 +42,6 @@ export function setTab(tab) {
     history.replaceState(null, '', `#${tab}`);
 }
 
-// ------------------------------------------------------------ Thông báo nhỏ + hộp thoại
 export function toast(message, type = 'info') {
     const root = document.getElementById('toast-root');
     if (!root) return;
@@ -109,7 +107,6 @@ export function initDelegation() {
     });
 }
 
-// ------------------------------------------------------------ lịch học: dữ liệu dùng chung
 export function weekMonday() { return mondayOfThisWeek(); }
 
 export function occurrences(day) {

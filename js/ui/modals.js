@@ -3,7 +3,6 @@ import { timeAgo } from './time.js';
 import { markSeen } from './header.js';
 import { handleLogout } from '../modules/auth.js';
 
-// ---------------------------------------------------------------- Thông báo
 actions['open-notif'] = () => {
     const { news, events } = state.dashboard;
     markSeen();
@@ -34,7 +33,6 @@ actions['open-notif'] = () => {
     </div>`);
 };
 
-// ---------------------------------------------------------------- Kết nối CSDL
 async function loadDb() {
     const box = document.getElementById('db-box');
     if (!box) return;
@@ -78,7 +76,6 @@ actions['open-db'] = () => {
 };
 actions['db-refresh'] = () => loadDb();
 
-// ---------------------------------------------------------------- Hồ sơ sinh viên
 let pickUni = null;
 let majors = [];
 

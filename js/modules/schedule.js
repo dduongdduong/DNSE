@@ -99,10 +99,6 @@ export function initSchedule(userProfile) {
     document.addEventListener('dnse:schedule-changed', load);
 }
 
-// ======================================================================
-// Trang "Lịch học": xem theo thứ / cả tuần, thêm lịch cá nhân, đánh dấu đã học
-// ======================================================================
-
 const DAY_LABEL = n => (n === 7 ? 'Chủ nhật' : `Thứ ${n + 1}`);   // 1 = Thứ 2 ... 7 = Chủ nhật
 
 function pad(n) { return String(n).padStart(2, '0'); }
@@ -111,7 +107,6 @@ function dateKey(d) {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-// Thứ 2 của tuần hiện tại (giờ máy người dùng)
 function mondayOfThisWeek() {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
@@ -246,7 +241,6 @@ export function initSchedulePage(userProfile) {
         if (e.target.closest('.sch-check')) {
             const key = dateKey(dateOfDay(monday, day));
             const wasDone = item.doneDates.includes(key);
-            // Cập nhật ngay, lỗi thì hoàn lại
             item.doneDates = wasDone ? item.doneDates.filter(d => d !== key) : [...item.doneDates, key];
             renderAll();
             try {
@@ -272,7 +266,6 @@ export function initSchedulePage(userProfile) {
         }
     });
 
-    // ---- thêm lịch cá nhân
     const openBtn = document.getElementById('btn-open-add-schedule');
     const saveBtn = document.getElementById('btn-save-schedule');
     const errBox = document.getElementById('sch-error');

@@ -31,14 +31,12 @@ export const api = {
     del: (path) => request(path, 'DELETE')
 };
 
-// Danh sách trường ít thay đổi nên chỉ tải một lần
 let universitiesCache = null;
 export async function getUniversities() {
     if (!universitiesCache) universitiesCache = await api.get('/universities');
     return universitiesCache;
 }
 
-// Dữ liệu từ DB / người dùng đều đi qua hàm này trước khi chèn vào innerHTML
 export function escapeHtml(value) {
     return String(value ?? '')
         .replace(/&/g, '&amp;')

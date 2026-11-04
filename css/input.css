@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Quét class Tailwind trong HTML và toàn bộ JS giao diện */
 @source "../index.html";
 @source "../js";
 
@@ -27,7 +26,6 @@
   button:disabled { cursor: not-allowed; }
 }
 
-/* Thanh cuộn mảnh */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
@@ -37,7 +35,6 @@
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Hiệu ứng vào / ra (tương đương animate-in của AI Studio) */
 @keyframes dnse-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes dnse-pop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
 @keyframes dnse-slide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
@@ -45,7 +42,6 @@
 .dnse-pop { animation: dnse-pop .22s ease both; }
 .dnse-slide { animation: dnse-slide .2s ease both; }
 
-/* Mọi nút bấm lún nhẹ khi nhấn */
 button:active:not(:disabled) { transform: scale(.97); }
 button { transition-property: background-color, border-color, color, box-shadow, opacity, transform; transition-duration: .15s; }
 

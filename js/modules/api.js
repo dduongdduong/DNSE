@@ -1,6 +1,6 @@
 import { api } from './api-client.js';
 /**
- * Chat với DNSE AI
+ * DNSE AI
  * @returns {{reply: string, source: 'ai'|'local'|'error'}}
  */
 export async function askDNSEAI(userPrompt, userProfile) {
@@ -12,9 +12,6 @@ export async function askDNSEAI(userPrompt, userProfile) {
     }
 }
 
-/**
- * Gợi ý dụng cụ + lời khuyên theo ngành. Trả null nếu không gọi được server.
- */
 export async function getSmartToolsAdvice(userProfile, refresh = false) {
     try {
         return await api.post('/ai/tools-advice', { userId: userProfile.id, refresh });

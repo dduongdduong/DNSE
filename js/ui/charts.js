@@ -1,11 +1,9 @@
-// Biểu đồ SVG thuần (thay cho Recharts / D3 của bản AI Studio)
 import { escapeHtml as esc } from '../modules/api-client.js';
 
 const GREEN = '#2D8A56', LIGHT = '#C7E6D4';
 
 function niceMax(v) { return Math.max(3, Math.ceil(v)); }
 
-// Cột: planned (xanh nhạt) và done (xanh đậm) theo nhóm
 export function barChart(rows, { height = 260 } = {}) {
     const W = 560, H = height, L = 30, R = 8, T = 34, B = 28;
     const max = niceMax(Math.max(...rows.map(r => Math.max(r.planned, r.done)), 1));
@@ -28,7 +26,6 @@ export function barChart(rows, { height = 260 } = {}) {
     return s;
 }
 
-// Đường: tỷ lệ hoàn thành (%) theo tuần
 export function lineChart(rows, { height = 260 } = {}) {
     const W = 560, H = height, L = 36, R = 16, T = 34, B = 28;
     const x = i => L + (W - L - R) * (rows.length === 1 ? 0.5 : i / (rows.length - 1));
@@ -49,7 +46,6 @@ export function lineChart(rows, { height = 260 } = {}) {
     return s;
 }
 
-// Radar: mỗi môn một trục, thang 0 - 4 (điểm sinh viên so với trung bình ngành)
 export function radarChart(subjects) {
     const W = 340, H = 310, M = 46, cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2 - M;
     const n = subjects.length, step = (Math.PI * 2) / n;
@@ -73,7 +69,6 @@ export function radarChart(subjects) {
     return s + '</svg>';
 }
 
-// Tooltip dùng chung cho mọi .chart-hit
 export function initChartTips() {
     let tip = document.getElementById('chart-tip');
     if (!tip) {
@@ -98,7 +93,6 @@ export function initChartTips() {
     });
 }
 
-// Đồng hồ nửa vòng cho GPA (thang 4) với các mốc Khá / Giỏi / Xuất sắc
 export function gaugeChart(gpa) {
     const cx = 120, cy = 112, r = 88, len = Math.PI * r;
     const color = gpa >= 3.6 ? '#059669' : gpa >= 3.2 ? GREEN : gpa >= 2.5 ? '#F59E0B' : '#F43F5E';

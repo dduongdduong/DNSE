@@ -6,7 +6,6 @@ const uniSelect = document.getElementById('university-select');
 const majorSelect = document.getElementById('major-select');
 const submitBtn = document.getElementById('btn-start-journey');
 
-// Chuyên ngành được tải từ SQL Server theo trường đã chọn
 uniSelect.addEventListener('change', async function(e) {
     const selectedUni = e.target.value;
     
@@ -17,7 +16,6 @@ uniSelect.addEventListener('change', async function(e) {
         try {
             const majors = await api.get(`/universities/${enc(selectedUni)}/majors`);
 
-            // Người dùng có thể đổi trường trong lúc đang tải
             if (uniSelect.value !== selectedUni) return;
 
             majors.forEach(major => {

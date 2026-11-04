@@ -1,6 +1,5 @@
 import { api, escapeHtml as esc } from './api-client.js';
 
-// Thẻ "Kết nối cơ sở dữ liệu" trong Cài đặt: kiểm tra SQL Server và số dòng của từng bảng
 export function initDbStatus() {
     const btn = document.getElementById('btn-check-db');
     const out = document.getElementById('db-status-content');

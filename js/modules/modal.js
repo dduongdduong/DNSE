@@ -1,4 +1,3 @@
-// Hộp thoại dùng chung: đóng khi bấm nền tối, nút [data-close-modal] hoặc phím Esc
 
 export function openModal(id) {
     const overlay = document.getElementById(id);

@@ -1,9 +1,3 @@
-/* =====================================================
-   DNSE - Giao diện cho các tính năng nâng cấp v2
-   Dùng lại biến màu trong variables.css, nạp SAU style.css.
-   ===================================================== */
-
-/* ---------- Điều hướng ---------- */
 .nav-ico {
     font-style: normal;
     display: inline-block;
@@ -14,7 +8,6 @@
 .mobile-nav { display: none; }
 .btn-logout-mobile { display: none; }
 
-/* ---------- Nút / ô nhập dùng chung ---------- */
 .toolbar-input {
     flex: 1 1 220px;
     min-width: 0;
@@ -58,7 +51,6 @@
 }
 .btn-ghost:hover { background: var(--bg-main); }
 
-/* ---------- Modal ---------- */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -123,7 +115,6 @@
     color: var(--status-danger);
 }
 
-/* ---------- Thông báo ---------- */
 .btn-notification::after { display: none; }
 .btn-notification.has-unread::after { display: block; }
 
@@ -152,7 +143,6 @@
 .notif-item small { display: block; margin-top: 4px; font-size: 12px; color: var(--text-secondary); }
 .notif-empty { font-size: 13px; color: var(--text-secondary); }
 
-/* ---------- Bản đồ ---------- */
 .map-toolbar {
     display: flex;
     gap: 12px;
@@ -191,7 +181,6 @@
     color: var(--text-secondary);
 }
 
-/* ---------- Diễn đàn ---------- */
 .forum-tools {
     display: flex;
     gap: 12px;
@@ -199,7 +188,6 @@
     margin-bottom: 20px;
 }
 
-/* ---------- Lịch học ---------- */
 .next-class {
     display: flex;
     align-items: center;
@@ -307,11 +295,9 @@
     border-radius: 16px;
 }
 
-/* ---------- Dụng cụ học tập ---------- */
 .tool-meta { font-size: 12px; color: var(--text-secondary); }
 .ai-source-note { margin-top: 12px; font-size: 11px; opacity: 0.7; }
 
-/* ---------- Chat ---------- */
 .chat-quick {
     display: flex;
     flex-wrap: wrap;
@@ -332,7 +318,6 @@
 .chat-chip:hover { border-color: var(--primary-blue); }
 .msg.pending { opacity: 0.6; font-style: italic; }
 
-/* ---------- Trạng thái CSDL ---------- */
 .db-status { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 .db-status .db-ok { color: var(--status-success); font-weight: 700; }
 .db-status .db-bad { color: var(--status-danger); font-weight: 700; }
@@ -346,7 +331,6 @@
 .db-tables div { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding: 2px 0; }
 .db-tables .db-missing { color: var(--status-danger); }
 
-/* ---------- Tablet: sidebar thu gọn chỉ còn icon ---------- */
 @media (max-width: 1200px) {
     .sidebar-menu a { justify-content: center; padding: 12px 8px; }
     .sidebar-menu a .nav-ico { font-size: 18px; }
@@ -355,9 +339,11 @@
     .tools-layout { grid-template-columns: 1fr; height: auto; }
 }
 
-/* ---------- Điện thoại ---------- */
 @media (max-width: 768px) {
-    body, .app-container, .main-content { height: 100vh; height: 100dvh; }
+    body, .app-container, .main-content {
+        height: 100vh; 
+        height: 100dvh; 
+    }
 
     .sidebar { display: none; }
 
@@ -443,7 +429,6 @@
     .chat-window { right: 8px; left: 8px; width: auto; bottom: 128px; height: min(480px, calc(100dvh - 190px)); }
 }
 
-/* ---------- Giao diện mới: xanh pastel + Outfit / Plus Jakarta Sans ---------- */
 h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; }
 .community-header h2, .settings-header h2, .top-header h2, .modal-head h3 { color: var(--forest); }
 ::selection { background: #D1E7DD; color: #0F5132; }
@@ -457,21 +442,14 @@ h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; }
 .sidebar-menu li.active a { background: #E3F3EA; color: #1B5836; }
 .place-card, .tool-item, .sch-item, .notif-item, .settings-card, .event-card { border-color: #E2ECE5; }
 
-/* =====================================================
-   Cách tương tác kiểu AI Studio
-   ===================================================== */
-
-/* Chuyển trang: mờ dần + trượt nhẹ */
 .page-view.active { animation: dnseFadeUp 0.28s ease both; }
 @keyframes dnseFadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes dnseFade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes dnseBounce { 0%, 80%, 100% { transform: translateY(0); opacity: .5; } 40% { transform: translateY(-5px); opacity: 1; } }
 
-/* Hộp thoại: nền mờ + hiện dần 200ms */
 .modal-overlay { backdrop-filter: blur(3px); animation: dnseFade 0.2s ease; }
 .modal-box { animation: dnseFadeUp 0.22s ease; }
 
-/* Thẻ nội dung: viền xanh nhạt + nền ánh xanh + nổi nhẹ khi rê chuột */
 .place-card, .tool-item, .sch-item, .notif-item, .event-card, .forum-item, .news-item, .feed-card, .post-card, .doc-link-item, .settings-card {
     transition: border-color .2s, background-color .2s, box-shadow .2s, transform .2s;
 }
@@ -482,7 +460,6 @@ h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; }
 }
 .place-card:hover, .tool-item:hover { transform: translateY(-1px); }
 
-/* Ô nhập: viền xanh + vòng sáng + nền trắng khi focus */
 .custom-input, .custom-select, .custom-select-small, .toolbar-input, #chat-input, .post-composer textarea {
     transition: border-color .2s, box-shadow .2s, background-color .2s;
 }
@@ -493,7 +470,6 @@ h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; }
     outline: none;
 }
 
-/* Nút: đậm màu khi rê chuột, lún nhẹ khi nhấn */
 .btn-save-settings, .btn-submit-post, .btn-enroll, .btn-toolbar, .btn-floating-ai, .day-tab, .filter-btn, .filter-tag, .chat-chip, .mobile-nav a, .btn-notification {
     transition: background-color .2s, color .2s, border-color .2s, transform .12s, box-shadow .2s;
 }
@@ -505,15 +481,12 @@ button:disabled { opacity: .6; cursor: not-allowed; }
 .btn-notification:hover { transform: scale(1.08); }
 .sch-check:hover { transform: scale(1.1); }
 
-/* Menu và avatar */
 .sidebar-menu li a:hover { background-color: #F2F9F5; color: #1B5836; }
 .student-badge, .author-avatar, .logo, .sidebar-header { transition: transform .2s; }
 .author-avatar:hover { transform: scale(1.06); }
 
-/* Công tắc ẩn danh */
 .btn-anon.active { background: var(--forest); border-color: var(--forest); }
 
-/* AI đang trả lời: ba chấm nảy */
 .typing { display: inline-flex; align-items: center; gap: 4px; padding: 4px 0; }
 .typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--primary-blue); animation: dnseBounce 1s infinite ease-in-out; }
 .typing i:nth-child(2) { animation-delay: .15s; }
@@ -523,7 +496,6 @@ button:disabled { opacity: .6; cursor: not-allowed; }
 .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #34C38F; animation: dnsePulse 1.6s infinite; }
 @keyframes dnsePulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 
-/* Tôn trọng người dùng tắt hiệu ứng */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

@@ -251,7 +251,6 @@ function stripFences(text) {
     return text.replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
 }
 
-// Kiểm tra JSON do AI trả về: sai cấu trúc thì ném lỗi để rơi về bộ gợi ý có sẵn
 function normalizeTools(raw, p) {
     const toolsIn = Array.isArray(raw && raw.essential_tools) ? raw.essential_tools : [];
     const tools = toolsIn

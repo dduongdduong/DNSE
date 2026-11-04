@@ -68,8 +68,6 @@ function renderAIAdvice(adviceSections, container, userProfile, source) {
     if (!adviceSections) return;
 
     const rawText = typeof adviceSections === 'string' ? adviceSections : adviceSections.join('\n\n');
-
-    // Escape trước, rồi mới đổi markdown đơn giản sang HTML
     const formattedHTML = esc(rawText)
         .replace(/### (.*)/g, '<h3>$1</h3>')
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -85,7 +83,6 @@ function renderAIAdvice(adviceSections, container, userProfile, source) {
 }
 
 function renderDocsList(linksArray, container) {
-    // Chỉ cho phép link http/https
     const safe = (linksArray || []).filter(l => l && /^https?:\/\//i.test(l.url));
     if (safe.length === 0) {
         container.innerHTML = '<div style="color:#666; font-size:13px;">Chưa có tài liệu tham khảo nào được đóng góp.</div>';

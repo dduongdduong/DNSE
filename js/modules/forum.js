@@ -1,11 +1,9 @@
 import { api, escapeHtml as esc } from './api-client.js';
  
-// Nội dung bài viết lưu dạng văn bản thuần: escape rồi mới đổi xuống dòng thành <br>
 function formatContent(text) {
     return esc(text).replace(/\r?\n/g, '<br>');
 }
  
-// Bỏ dấu để gõ "giai phau" vẫn tìm ra "Giải phẫu"
 function normalize(s) {
     return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase();
 }
@@ -29,7 +27,6 @@ export function initForum(userProfile) {
     let isAnonymous = false;
     let currentPosts = [];
  
-    // Bình luận được tải khi mở một bài; lưu lại để không phải tải lại
     const commentsMap = {};
  
     const uid = userProfile.id;

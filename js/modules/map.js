@@ -34,10 +34,9 @@ export async function loadCampusMap(userProfile) {
     }
 }
 
-// ---------------------------------------------------------------- danh sách địa điểm
 
 const state = { uni: null, cat: 'all', q: '', radius: 0 };
-const placesCache = {};     // theo mã trường
+const placesCache = {};    
 let user = null;
 let universities = [];
 let controlsReady = false;
@@ -48,7 +47,6 @@ function normalize(s) {
     return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase();
 }
 
-// "250m" -> 250, "1.2km" -> 1200, không đọc được -> null
 function parseMeters(text) {
     const m = /^(\d+(?:[.,]\d+)?)\s*(km|m)$/i.exec(String(text || '').trim());
     if (!m) return null;
@@ -56,7 +54,6 @@ function parseMeters(text) {
     return m[2].toLowerCase() === 'km' ? n * 1000 : n;
 }
 
-// Ưu tiên theo giờ trong ngày: sáng cafe, trưa cơm, chiều chỗ học
 function timeScore(p, hour) {
     if (hour < 10 && p.category === 'coffee') return 1;
     if (hour >= 11 && hour <= 13 && p.category === 'food') return 1;
@@ -72,7 +69,6 @@ async function fetchPlaces(uniCode) {
 }
 
 function panTo(place) {
-    // Địa điểm do sinh viên thêm chưa có tọa độ thật: tìm theo tên + địa chỉ
     const html = place.isCommunity
         ? iframeFor(`${place.name}, ${place.address}, Đà Nẵng`, 17)
         : buildMapIframe(place.lat, place.lng, 18);
@@ -200,7 +196,7 @@ async function initControls() {
     const list = $('ai-places-list');
     if (list) {
         list.addEventListener('click', async (e) => {
-            if (e.target.closest('a')) return;      // "Chỉ đường" mở tab mới, không di chuyển bản đồ
+            if (e.target.closest('a')) return;   
 
             const del = e.target.closest('.place-delete');
             if (del) {
@@ -271,7 +267,6 @@ function initAddPlace() {
     });
 }
 
-// Được gọi mỗi lần mở trang Bản đồ
 export async function renderAISuggestions(userProfile) {
     user = userProfile;
     if (!state.uni) state.uni = userProfile.university;

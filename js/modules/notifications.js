@@ -16,7 +16,6 @@ function latestNewsTime(news) {
     return news.reduce((max, n) => Math.max(max, new Date(n.createdAt).getTime() || 0), 0);
 }
 
-// Chuông thông báo: tin mới + sự kiện sắp tới (lấy từ /api/dashboard). Chấm đỏ chỉ hiện khi có tin mới hơn lần xem trước.
 export function initNotifications({ news, events }) {
     const btn = document.getElementById('btn-notification');
     const body = document.getElementById('notif-body');

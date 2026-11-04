@@ -1,7 +1,7 @@
 import { state, views, actions, esc, icon, toast, openModal, closeModal, toggleDone, occurrences, api, enc, addScheduleItem, renderCurrent } from './core.js';
 import { DAY_LABEL, todayNumber, toMinutes, formatDuration } from './time.js';
 
-let sel = null;   // 'all' hoặc 1..7 (mặc định hôm nay)
+let sel = null;   
 const current = () => (sel === null ? (sel = todayNumber()) : sel);
 
 actions['sch-day'] = (el) => { sel = el.dataset.day === 'all' ? 'all' : Number(el.dataset.day); renderCurrent(); };

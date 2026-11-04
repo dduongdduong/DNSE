@@ -2,18 +2,16 @@
 import { renderAISuggestions } from './map.js';
 
 /**
- * Hàm khởi tạo chính cho UI
- * @param {Object} userProfile - Dữ liệu người dùng để phục vụ gợi ý AI
+ * @param {Object} userProfile
  */
 export function initUI(userProfile) {
     initNavigation(userProfile);
     initStudyTimer();
-    initMobileMenu(); // Hỗ trợ cho thiết bị di động
+    initMobileMenu();
 }
 
 
 function initNavigation(userProfile) {
-    // Sidebar (desktop), thanh dưới (điện thoại) và các link "xem thêm" trong trang đều dùng chung một bộ điều hướng
     const navLinks = document.querySelectorAll('.sidebar-menu a, .mobile-nav a, a.link-action[href^="#"]');
     const pages = document.querySelectorAll('.page-view');
 

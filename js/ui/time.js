@@ -1,4 +1,3 @@
-// Quy ước của DNSE: 1 = Thứ 2 ... 6 = Thứ 7, 7 = Chủ nhật (khớp cột Schedules.DayOfWeek)
 export const DAY_LABEL = n => (n === 7 ? 'Chủ nhật' : `Thứ ${n + 1}`);
 export const pad = n => String(n).padStart(2, '0');
 
